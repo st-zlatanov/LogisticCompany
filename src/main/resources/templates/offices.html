@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head('Offices')"></head>
+
+<body>
+
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between mb-3">
+
+        <h2 class="page-title">Offices</h2>
+
+        <a href="/offices/create" class="btn btn-success">
+            Create Office
+        </a>
+
+    </div>
+
+    <div class="card">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover">
+
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>City</th>
+                    <th>Address</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr th:each="o : ${offices}">
+
+                    <td th:text="${o.id}"></td>
+
+                    <td th:text="${o.city}"></td>
+
+                    <td th:text="${o.address}"></td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

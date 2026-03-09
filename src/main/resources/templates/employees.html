@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head('Employees')"></head>
+
+<body>
+
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="container mt-4">
+
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3">
+
+        <h2 class="page-title mb-3 mb-md-0">Employees</h2>
+
+        <a href="/employees/create" class="btn btn-success">
+            Create Employee
+        </a>
+
+    </div>
+
+    <div class="card shadow-sm">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle mb-0">
+
+                <thead class="table-dark">
+
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Position</th>
+                    <th>Office</th>
+                    <th>Actions</th>
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                <tr th:each="e : ${employees}">
+
+                    <td th:text="${e.id}"></td>
+
+                    <td th:text="${e.user.fullName}"></td>
+
+                    <td>
+
+<span class="badge bg-primary"
+      th:text="${e.position}">
+</span>
+
+                    </td>
+
+                    <td th:text="${e.office.city}"></td>
+
+                    <td>
+
+                        <div class="d-flex gap-2 flex-wrap">
+
+                            <a th:href="@{/employees/edit/{id}(id=${e.id})}"
+                               class="btn btn-sm btn-primary">
+                                Edit
+                            </a>
+
+                            <form th:action="@{/employees/delete/{id}(id=${e.id})}"
+                                  method="post">
+
+                                <button class="btn btn-sm btn-danger">
+                                    Delete
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

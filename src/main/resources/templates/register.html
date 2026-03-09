@@ -1,0 +1,188 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <title>Register</title>-->
+
+<!--    <script>-->
+
+<!--        function toggleClientFields() {-->
+
+<!--            const role = document.getElementById("role").value;-->
+<!--            const clientFields = document.getElementById("clientFields");-->
+
+<!--            if (role === "CLIENT") {-->
+<!--                clientFields.style.display = "block";-->
+<!--            } else {-->
+<!--                clientFields.style.display = "none";-->
+<!--            }-->
+
+<!--        }-->
+
+<!--    </script>-->
+
+<!--</head>-->
+<!--<body>-->
+
+<!--<h2>Register</h2>-->
+
+<!--<div th:if="${error}" style="color:red">-->
+<!--    <p th:text="${error}"></p>-->
+<!--</div>-->
+
+<!--<form method="post" action="/register">-->
+
+<!--    Username:-->
+<!--    <input type="text" name="username"/>-->
+<!--    <br/>-->
+
+<!--    Full Name:-->
+<!--    <input type="text" name="fullName"/>-->
+<!--    <br/>-->
+
+<!--    Password:-->
+<!--    <input type="password" name="password"/>-->
+<!--    <br/>-->
+
+<!--    Role:-->
+<!--    <select name="role" id="role" onchange="toggleClientFields()">-->
+<!--        <option value="CLIENT">Client</option>-->
+<!--        <option value="EMPLOYEE">Employee</option>-->
+<!--    </select>-->
+
+<!--    <br/><br/>-->
+
+<!--    <div id="clientFields">-->
+
+<!--        Address:-->
+<!--        <input type="text" name="address"/>-->
+<!--        <br/>-->
+
+<!--        Phone:-->
+<!--        <input type="text" name="phone"/>-->
+<!--        <br/>-->
+
+<!--    </div>-->
+
+<!--    <br/>-->
+
+<!--    <button type="submit">Register</button>-->
+
+<!--</form>-->
+
+<!--<a href="/login">Login</a>-->
+
+<!--<script>-->
+<!--    toggleClientFields();-->
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head('Register')"></head>
+
+<body>
+
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-5">
+
+            <div class="card">
+
+                <div class="card-body">
+
+                    <h3 class="text-center mb-4">Register</h3>
+
+                    <div th:if="${error}" class="alert alert-danger">
+                        <span th:text="${error}"></span>
+                    </div>
+
+                    <form method="post" action="/register">
+
+                        <div class="mb-3">
+                            <label>Username</label>
+                            <input class="form-control" name="username" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Full Name</label>
+                            <input class="form-control" name="fullName" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Password</label>
+                            <input class="form-control" type="password" name="password" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Role</label>
+
+                            <select class="form-select" name="role" id="roleSelect">
+
+                                <option value="CLIENT">Client</option>
+                                <option value="EMPLOYEE">Employee</option>
+
+                            </select>
+
+                        </div>
+
+                        <div id="clientFields">
+
+                            <div class="mb-3">
+                                <label>Address</label>
+                                <input class="form-control" name="address">
+                            </div>
+
+                            <div class="mb-3">
+                                <label>Phone</label>
+                                <input class="form-control" name="phone">
+                            </div>
+
+                        </div>
+
+                        <button class="btn btn-success w-100">
+                            Register
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function(){
+
+        const role = document.getElementById("roleSelect");
+        const clientFields = document.getElementById("clientFields");
+
+        role.addEventListener("change", function(){
+
+            if(role.value === "CLIENT"){
+                clientFields.style.display = "block";
+            }
+            else{
+                clientFields.style.display = "none";
+            }
+
+        });
+
+    });
+
+</script>
+
+</body>
+</html>

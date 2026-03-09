@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Pending Employees</title>
+</head>
+<body>
+
+<h2>Pending Employees</h2>
+
+<table border="1">
+
+    <tr>
+        <th>Username</th>
+        <th>Office</th>
+        <th>Position</th>
+        <th>Action</th>
+    </tr>
+
+    <tr th:each="u : ${users}">
+        <form method="post" action="/admin/approve">
+
+            <td th:text="${u.username}"></td>
+
+            <td>
+                <select name="officeId">
+                    <option th:each="o : ${offices}"
+                            th:value="${o.id}"
+                            th:text="${o.city + ' - ' + o.address}">
+                    </option>
+                </select>
+            </td>
+
+            <td>
+                <select name="position">
+                    <option value="COURIER">Courier</option>
+                    <option value="OFFICE">Office</option>
+                </select>
+            </td>
+
+            <td>
+                <input type="hidden" name="userId" th:value="${u.id}"/>
+                <button type="submit">Approve</button>
+            </td>
+
+        </form>
+    </tr>
+
+</table>
+
+</body>
+</html>

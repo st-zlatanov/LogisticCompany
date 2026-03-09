@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head('Create Shipment')"></head>
+
+<body>
+
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="container mt-4">
+
+    <h2 class="page-title">Create Shipment</h2>
+
+    <div class="card p-4">
+
+        <form th:action="@{/shipments/create}"
+              th:object="${shipmentCreateDTO}"
+              method="post">
+            <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+                <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label>Sender</label>
+                    <select th:field="*{senderId}" class="form-select">
+                        <option value="">Select Sender</option>
+                        <option th:each="c : ${clients}"
+                                th:value="${c.id}"
+                                th:text="${c.user.fullName}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label>Receiver</label>
+                    <select th:field="*{receiverId}" class="form-select">
+                        <option value="">Select Receiver</option>
+                        <option th:each="c : ${clients}"
+                                th:value="${c.id}"
+                                th:text="${c.user.fullName}">
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+                <div class="col-md-6">
+                    <label>Source Office</label>
+                    <select th:field="*{sourceOfficeId}" class="form-select">
+                        <option value="">Select Office</option>
+                        <option th:each="o : ${offices}"
+                                th:value="${o.id}"
+                                th:text="${o.city + ' - ' + o.address}">
+                        </option>
+                    </select>
+                </div>
+
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label>Weight (kg)</label>
+                    <input type="number"
+                           step="0.1"
+                           th:field="*{weight}"
+                           class="form-control">
+                </div>
+
+                <div class="col-md-6">
+                    <label>Delivery Type</label>
+                    <select th:field="*{deliveryType}"
+                            class="form-select"
+                            id="deliveryType">
+                        <option value="">Select Type</option>
+                        <option value="OFFICE">To Office</option>
+                        <option value="ADDRESS">To Address</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3" id="destinationOfficeBlock" style="display:none;">
+                <label>Destination Office</label>
+                <select th:field="*{destinationOfficeId}" class="form-select">
+                    <option value="">Select Office</option>
+                    <option th:each="o : ${offices}"
+                            th:value="${o.id}"
+                            th:text="${o.city + ' - ' + o.address}">
+                    </option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label>Description</label>
+                <textarea th:field="*{description}"
+                          class="form-control"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-success">
+                Create Shipment
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script>
+    document.getElementById("deliveryType").addEventListener("change", function() {
+
+        let officeBlock = document.getElementById("destinationOfficeBlock");
+
+        if(this.value === "OFFICE") {
+            officeBlock.style.display = "block";
+        }
+        else {
+            officeBlock.style.display = "none";
+        }
+    });
+</script>
+
+</body>
+</html>

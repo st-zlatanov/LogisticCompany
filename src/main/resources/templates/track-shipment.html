@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head('Track Shipment')"></head>
+
+<body>
+
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="container mt-4">
+
+    <h2 class="page-title text-center mb-4">
+        Shipment Tracking
+    </h2>
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-6">
+
+            <div class="card p-4">
+
+                <h4 class="text-center mb-3">
+                    Shipment #<span th:text="${shipment.id}"></span>
+                </h4>
+
+                <hr>
+
+                <p>
+                    <strong>Status:</strong>
+
+                    <span th:if="${shipment.status.name() == 'SENT'}"
+                          class="badge bg-warning text-dark">
+                        Sent
+                    </span>
+
+                    <span th:if="${shipment.status.name() == 'DELIVERED'}"
+                          class="badge bg-success">
+                        Delivered
+                    </span>
+
+                </p>
+
+                <p>
+                    <strong>Sender:</strong>
+                    <span th:text="${shipment.sender.user.fullName}"></span>
+                </p>
+
+                <p>
+                    <strong>Receiver:</strong>
+                    <span th:text="${shipment.receiver.user.fullName}"></span>
+                </p>
+
+                <p>
+                    <strong>Weight:</strong>
+                    <span th:text="${shipment.weight}"></span> kg
+                </p>
+
+                <p>
+                    <strong>Price:</strong>
+                    <span th:text="${shipment.price}"></span> $
+                </p>
+
+                <p>
+                    <strong>Created:</strong>
+                    <span th:text="${#temporals.format(shipment.dateCreated,'yyyy-MM-dd HH:mm')}"></span>
+                </p>
+
+                <hr>
+
+                <div class="text-center mt-3">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+                            <div class="badge bg-primary">Created</div>
+                        </div>
+
+                        <div>
+                            <div class="badge bg-warning text-dark">Sent</div>
+                        </div>
+
+                        <div>
+                            <div th:if="${shipment.status.name() == 'DELIVERED'}"
+                                 class="badge bg-success">
+                                Delivered
+                            </div>
+
+                            <div th:if="${shipment.status.name() != 'DELIVERED'}"
+                                 class="badge bg-secondary">
+                                Pending
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

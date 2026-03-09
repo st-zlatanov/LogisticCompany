@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragments/head :: head('Home')"></head>
+
+<body>
+
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="container mt-4">
+
+    <h2 class="page-title">Dashboard</h2>
+
+
+
+    <div sec:authorize="hasRole('ADMIN')" class="row g-4">
+
+        <div class="col-md-4">
+            <div class="card p-4 text-center">
+                <h5>Total Shipments</h5>
+                <h3 th:text="${totalShipments}">0</h3>
+                <a href="/shipments" class="btn btn-primary mt-2">
+                    View Shipments
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-4 text-center">
+                <h5>Employees</h5>
+                <a href="/employees" class="btn btn-dark mt-3">
+                    Manage Employees
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-4 text-center">
+                <h5>Offices</h5>
+                <a href="/offices" class="btn btn-secondary mt-3">
+                    Manage Offices
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div sec:authorize="hasRole('EMPLOYEE')" class="row g-4">
+
+        <div class="col-md-4">
+            <div class="card p-4 text-center">
+                <h5>Create Shipment</h5>
+                <a href="/shipments/create"
+                   class="btn btn-success mt-3">
+                    New Shipment
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-4 text-center">
+                <h5>All Shipments</h5>
+                <a href="/shipments"
+                   class="btn btn-primary mt-3">
+                    View Shipments
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-4 text-center">
+                <h5>Clients</h5>
+                <a href="/clients"
+                   class="btn btn-dark mt-3">
+                    View Clients
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <div sec:authorize="hasRole('CLIENT')" class="row g-4">
+
+        <div class="col-md-6">
+            <div class="card p-4 text-center">
+                <h5>My Shipments</h5>
+                <a href="/shipments/my"
+                   class="btn btn-primary mt-3">
+                    View My Shipments
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card p-4 text-center">
+
+                <h5 class="mb-3">Track Shipment</h5>
+
+                <input type="number"
+                       id="trackId"
+                       placeholder="Enter Shipment ID"
+                       class="form-control mb-3">
+
+                <button onclick="trackShipment()"
+                        class="btn btn-success w-100">
+                    Track
+                </button>
+
+            </div>
+        </div>
+
+        <script>
+
+            function trackShipment(){
+
+                const id = document.getElementById("trackId").value;
+
+                if(!id){
+                    alert("Please enter shipment ID");
+                    return;
+                }
+
+                window.location.href = "/shipments/track/" + id;
+
+            }
+
+        </script>
+
+    </div>
+
+
+
+    <div sec:authorize="!isAuthenticated()" class="text-center mt-5">
+
+        <h3>Welcome to Logistic System</h3>
+
+        <p>Please log in or register to continue.</p>
+
+        <a href="/login" class="btn btn-primary">
+            Login
+        </a>
+
+        <a href="/register" class="btn btn-success">
+            Register
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>
