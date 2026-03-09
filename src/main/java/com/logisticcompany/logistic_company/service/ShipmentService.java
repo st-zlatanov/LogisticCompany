@@ -127,4 +127,9 @@ public class ShipmentService {
         return shipmentRepository.findById(id).orElseThrow();
     }
 
+    public Shipment getShipmentByTrackingNumber(String trackingNumber) {
+        return shipmentRepository.findByTrackingNumber(trackingNumber)
+                .orElseThrow(() -> new RuntimeException("Shipment not found"));
+    }
+
 }

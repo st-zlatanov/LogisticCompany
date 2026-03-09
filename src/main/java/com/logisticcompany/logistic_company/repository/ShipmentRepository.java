@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface ShipmentRepository extends JpaRepository<Shipment, Long> {
 
@@ -20,6 +21,8 @@ public interface ShipmentRepository extends JpaRepository<Shipment, Long> {
     List<Shipment> findByRegisteredById(Long employeeId);
 
     List<Shipment> findBySender_User_Username(String username);
+
+    Optional<Shipment> findByTrackingNumber(String trackingNumber);
 
     @Query("""
 SELECT s FROM Shipment s

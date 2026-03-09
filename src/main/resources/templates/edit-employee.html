@@ -51,7 +51,7 @@
 
                         <option th:each="o : ${offices}"
                                 th:value="${o.id}"
-                                th:text="${o.city}"
+                                th:text="${o.city + ' - ' + o.address}"
                                 th:selected="${employee.office.id == o.id}">
                         </option>
 

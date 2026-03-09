@@ -5,8 +5,10 @@
 
 <body>
 
+<div th:replace="fragments/navbar :: navbar"></div>
+
 <div class="container d-flex justify-content-center align-items-center"
-     style="height:100vh">
+     style="height:85vh">
 
     <div class="card p-4" style="width:350px">
 
@@ -15,30 +17,30 @@
         <form method="post" action="/login">
 
             <div class="mb-3">
-
                 <label>Username</label>
-
                 <input type="text"
                        name="username"
-                       class="form-control">
-
+                       class="form-control"
+                       required>
             </div>
 
             <div class="mb-3">
-
                 <label>Password</label>
-
                 <input type="password"
                        name="password"
-                       class="form-control">
-
+                       class="form-control"
+                       required>
             </div>
 
-            <button class="btn btn-primary w-100">
+            <button class="btn btn-primary w-100 mb-2">
                 Login
             </button>
 
         </form>
+
+        <a href="/register" class="btn btn-outline-secondary w-100">
+            Register
+        </a>
 
     </div>
 

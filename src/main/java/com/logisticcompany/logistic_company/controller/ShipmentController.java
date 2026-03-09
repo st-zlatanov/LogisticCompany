@@ -152,10 +152,11 @@ public class ShipmentController {
         return "shipments";
     }
 
-    @GetMapping("/track/{id}")
-    public String trackShipment(@PathVariable Long id, Model model) {
+    @GetMapping("/track/{trackingNumber}")
+    public String trackShipment(@PathVariable String trackingNumber, Model model) {
 
-        Shipment shipment = shipmentService.getShipmentById(id);
+        Shipment shipment = shipmentService.getShipmentByTrackingNumber(trackingNumber);
+
         model.addAttribute("shipment", shipment);
 
         return "track-shipment";

@@ -15,12 +15,15 @@
 
     <div class="row justify-content-center">
 
-        <div class="col-md-6">
+        <div class="col-md-7">
 
             <div class="card p-4">
 
                 <h4 class="text-center mb-3">
-                    Shipment #<span th:text="${shipment.id}"></span>
+                    Tracking #
+                    <span class="badge bg-dark"
+                          th:text="${shipment.trackingNumber}">
+                    </span>
                 </h4>
 
                 <hr>
@@ -57,7 +60,24 @@
 
                 <p>
                     <strong>Price:</strong>
-                    <span th:text="${shipment.price}"></span> $
+                    <span th:text="${shipment.price}"></span> €
+                </p>
+
+                <p>
+                    <strong>Delivery Type:</strong>
+                    <span th:text="${shipment.deliveryType}"></span>
+                </p>
+
+                <p th:if="${shipment.deliveryType.name() == 'OFFICE'}">
+                    <strong>Delivery Office:</strong>
+                    <span th:text="${shipment.destinationOffice.city + ' - ' + shipment.destinationOffice.address}">
+                    </span>
+                </p>
+
+                <p th:if="${shipment.deliveryType.name() == 'ADDRESS'}">
+                    <strong>Delivery Address:</strong>
+                    <span th:text="${shipment.deliveryAddress}">
+                    </span>
                 </p>
 
                 <p>
@@ -67,30 +87,28 @@
 
                 <hr>
 
-                <div class="text-center mt-3">
+                <!-- TIMELINE TRACKER -->
 
-                    <div class="d-flex justify-content-between">
+                <div class="tracker mt-4">
 
-                        <div>
-                            <div class="badge bg-primary">Created</div>
-                        </div>
+                    <div class="step active">
+                        <div class="circle"></div>
+                        <div class="label">Created</div>
+                    </div>
 
-                        <div>
-                            <div class="badge bg-warning text-dark">Sent</div>
-                        </div>
+                    <div class="step"
+                         th:classappend="${shipment.status.name() == 'SENT' || shipment.status.name() == 'DELIVERED'} ? 'active'">
 
-                        <div>
-                            <div th:if="${shipment.status.name() == 'DELIVERED'}"
-                                 class="badge bg-success">
-                                Delivered
-                            </div>
+                        <div class="circle"></div>
+                        <div class="label">Sent</div>
 
-                            <div th:if="${shipment.status.name() != 'DELIVERED'}"
-                                 class="badge bg-secondary">
-                                Pending
-                            </div>
+                    </div>
 
-                        </div>
+                    <div class="step"
+                         th:classappend="${shipment.status.name() == 'DELIVERED'} ? 'active'">
+
+                        <div class="circle"></div>
+                        <div class="label">Delivered</div>
 
                     </div>
 
@@ -103,6 +121,52 @@
     </div>
 
 </div>
+
+
+<style>
+
+    .tracker{
+    display:flex;
+    justify-content:space-between;
+    position:relative;
+    margin-top:30px;
+    }
+
+    .tracker::before{
+    content:'';
+    position:absolute;
+    top:12px;
+    left:0;
+    right:0;
+    height:4px;
+    background:#ddd;
+    z-index:0;
+    }
+
+    .step{
+    text-align:center;
+    position:relative;
+    z-index:1;
+    }
+
+    .circle{
+    width:25px;
+    height:25px;
+    border-radius:50%;
+    background:#bbb;
+    margin:auto;
+    }
+
+    .step.active .circle{
+    background:#28a745;
+    }
+
+    .label{
+    margin-top:5px;
+    font-size:14px;
+    }
+
+</style>
 
 </body>
 </html>

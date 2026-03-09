@@ -10,25 +10,24 @@
 
 <div class="container mt-4">
 
-    <h2 class="page-title">Dashboard</h2>
-
+    <h2 class="page-title mb-4">Dashboard</h2>
 
 
     <div sec:authorize="hasRole('ADMIN')" class="row g-4">
 
         <div class="col-md-4">
-            <div class="card p-4 text-center">
-                <h5>Total Shipments</h5>
-                <h3 th:text="${totalShipments}">0</h3>
-                <a href="/shipments" class="btn btn-primary mt-2">
+            <div class="card shadow border-0 text-center p-4 bg-light">
+                <h5 class="text-muted">Total Shipments</h5>
+                <h2 class="fw-bold text-primary" th:text="${totalShipments}">0</h2>
+                <a href="/shipments" class="btn btn-primary mt-3">
                     View Shipments
                 </a>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="card p-4 text-center">
-                <h5>Employees</h5>
+            <div class="card shadow border-0 text-center p-4 bg-light">
+                <h5 class="text-muted">Employees</h5>
                 <a href="/employees" class="btn btn-dark mt-3">
                     Manage Employees
                 </a>
@@ -36,8 +35,8 @@
         </div>
 
         <div class="col-md-4">
-            <div class="card p-4 text-center">
-                <h5>Offices</h5>
+            <div class="card shadow border-0 text-center p-4 bg-light">
+                <h5 class="text-muted">Offices</h5>
                 <a href="/offices" class="btn btn-secondary mt-3">
                     Manage Offices
                 </a>
@@ -50,7 +49,7 @@
     <div sec:authorize="hasRole('EMPLOYEE')" class="row g-4">
 
         <div class="col-md-4">
-            <div class="card p-4 text-center">
+            <div class="card shadow border-0 text-center p-4 bg-light">
                 <h5>Create Shipment</h5>
                 <a href="/shipments/create"
                    class="btn btn-success mt-3">
@@ -60,7 +59,7 @@
         </div>
 
         <div class="col-md-4">
-            <div class="card p-4 text-center">
+            <div class="card shadow border-0 text-center p-4 bg-light">
                 <h5>All Shipments</h5>
                 <a href="/shipments"
                    class="btn btn-primary mt-3">
@@ -70,7 +69,7 @@
         </div>
 
         <div class="col-md-4">
-            <div class="card p-4 text-center">
+            <div class="card shadow border-0 text-center p-4 bg-light">
                 <h5>Clients</h5>
                 <a href="/clients"
                    class="btn btn-dark mt-3">
@@ -86,7 +85,7 @@
     <div sec:authorize="hasRole('CLIENT')" class="row g-4">
 
         <div class="col-md-6">
-            <div class="card p-4 text-center">
+            <div class="card shadow border-0 text-center p-4 bg-light">
                 <h5>My Shipments</h5>
                 <a href="/shipments/my"
                    class="btn btn-primary mt-3">
@@ -96,39 +95,22 @@
         </div>
 
         <div class="col-md-6">
-            <div class="card p-4 text-center">
+            <div class="card shadow border-0 text-center p-4 bg-light">
 
                 <h5 class="mb-3">Track Shipment</h5>
 
-                <input type="number"
-                       id="trackId"
-                       placeholder="Enter Shipment ID"
+                <input type="text"
+                       id="trackingNumber"
+                       placeholder="Enter Tracking Number"
                        class="form-control mb-3">
 
                 <button onclick="trackShipment()"
                         class="btn btn-success w-100">
-                    Track
+                    Track Shipment
                 </button>
 
             </div>
         </div>
-
-        <script>
-
-            function trackShipment(){
-
-                const id = document.getElementById("trackId").value;
-
-                if(!id){
-                    alert("Please enter shipment ID");
-                    return;
-                }
-
-                window.location.href = "/shipments/track/" + id;
-
-            }
-
-        </script>
 
     </div>
 
@@ -138,9 +120,9 @@
 
         <h3>Welcome to Logistic System</h3>
 
-        <p>Please log in or register to continue.</p>
+        <p class="text-muted">Please log in or register to continue.</p>
 
-        <a href="/login" class="btn btn-primary">
+        <a href="/login" class="btn btn-primary me-2">
             Login
         </a>
 
@@ -151,6 +133,35 @@
     </div>
 
 </div>
+
+
+<script>
+
+    function trackShipment(){
+
+        const trackingNumber = document.getElementById("trackingNumber").value;
+
+        if(!trackingNumber){
+            alert("Please enter tracking number");
+            return;
+        }
+
+        window.location.href = "/shipments/track/" + trackingNumber;
+
+    }
+
+    /* ENTER key tracking */
+
+    document.getElementById("trackingNumber")
+    .addEventListener("keypress", function(e){
+
+        if(e.key === "Enter"){
+            trackShipment();
+        }
+
+    });
+
+</script>
 
 </body>
 </html>
