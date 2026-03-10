@@ -9,101 +9,172 @@
 
 <div class="container mt-4">
 
-    <h2 class="page-title">
+    <h2 class="page-title mb-4">
         Shipment Details
     </h2>
 
-    <div class="card p-4">
+    <div class="card shadow-sm p-4">
 
 
-        <div class="row mb-3">
-
-            <div class="col-md-4">
-                <strong>ID:</strong>
-                <span th:text="${shipment.id}"></span>
-            </div>
+        <div class="row g-3 mb-4">
 
             <div class="col-md-4">
-                <strong>Tracking Number:</strong>
-                <span class="badge bg-dark"
-                      th:text="${shipment.trackingNumber}">
-                </span>
+
+                <div class="border rounded p-3 h-100">
+
+                    <div class="text-muted small">Shipment ID</div>
+
+                    <div class="fw-bold fs-5"
+                         th:text="${shipment.id}">
+                    </div>
+
+                </div>
+
             </div>
+
 
             <div class="col-md-4">
-                <strong>Status:</strong>
 
-                <span th:if="${shipment.status.name() == 'SENT'}"
-                      class="badge bg-warning text-dark">
-                    Sent
-                </span>
+                <div class="border rounded p-3 h-100">
 
-                <span th:if="${shipment.status.name() == 'DELIVERED'}"
-                      class="badge bg-success">
-                    Delivered
-                </span>
+                    <div class="text-muted small">Tracking Number</div>
+
+                    <span class="badge bg-dark fs-6"
+                          th:text="${shipment.trackingNumber}">
+</span>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="border rounded p-3 h-100">
+
+                    <div class="text-muted small">Status</div>
+
+                    <span th:if="${shipment.status.name() == 'SENT'}"
+                          class="badge bg-warning text-dark fs-6">
+Sent
+</span>
+
+                    <span th:if="${shipment.status.name() == 'DELIVERED'}"
+                          class="badge bg-success fs-6">
+Delivered
+</span>
+
+                </div>
 
             </div>
 
         </div>
 
 
-        <div class="row mb-3">
+        <div class="row g-3 mb-4">
 
             <div class="col-md-6">
-                <strong>Sender:</strong>
-                <span th:text="${shipment.sender.user.fullName}"></span>
+
+                <div class="border rounded p-3">
+
+                    <div class="text-muted small">Sender</div>
+
+                    <div class="fw-semibold"
+                         th:text="${shipment.sender.user.fullName}">
+                    </div>
+
+                </div>
+
             </div>
 
-            <div class="col-md-6">
-                <strong>Receiver:</strong>
-                <span th:text="${shipment.receiver.user.fullName}"></span>
-            </div>
-
-        </div>
-
-        <div class="row mb-3">
 
             <div class="col-md-6">
-                <strong>Weight:</strong>
-                <span th:text="${shipment.weight}"></span> kg
-            </div>
 
-            <div class="col-md-6">
-                <strong>Price:</strong>
-                <span th:text="${shipment.price}"></span> €
-            </div>
+                <div class="border rounded p-3">
 
-        </div>
+                    <div class="text-muted small">Receiver</div>
 
+                    <div class="fw-semibold"
+                         th:text="${shipment.receiver.user.fullName}">
+                    </div>
 
-        <div class="row mb-3">
+                </div>
 
-            <div class="col-md-6">
-                <strong>Delivery Type:</strong>
-                <span th:text="${shipment.deliveryType}"></span>
-            </div>
-
-            <div class="col-md-6">
-                <strong>Date Created:</strong>
-                <span th:text="${#temporals.format(shipment.dateCreated,'yyyy-MM-dd HH:mm')}"></span>
             </div>
 
         </div>
 
 
-        <div class="row mb-3">
+        <div class="row g-3 mb-4">
+
+            <div class="col-md-4">
+
+                <div class="border rounded p-3">
+
+                    <div class="text-muted small">Weight</div>
+
+                    <div th:text="${shipment.weight} + ' kg'"></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="border rounded p-3">
+
+                    <div class="text-muted small">Price</div>
+
+                    <div th:text="${shipment.price} + ' €'"></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="border rounded p-3">
+
+                    <div class="text-muted small">Delivery Type</div>
+
+                    <div th:text="${shipment.deliveryType}"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="row g-3 mb-4">
+
+            <div class="col-md-6">
+
+                <div class="border rounded p-3">
+
+                    <div class="text-muted small">Source Office</div>
+
+                    <div th:text="${shipment.sourceOffice.city + ' - ' + shipment.sourceOffice.address}">
+                    </div>
+
+                </div>
+
+            </div>
 
 
             <div class="col-md-6"
                  th:if="${shipment.deliveryType.name() == 'OFFICE'}">
 
-                <strong>Delivery Office:</strong>
+                <div class="border rounded p-3">
 
-                <span class="badge bg-secondary"
-                      th:text="${shipment.destinationOffice.city + ' - ' + shipment.destinationOffice.address}">
-                </span>
-        </span>
+                    <div class="text-muted small">Destination Office</div>
+
+                    <div th:text="${shipment.destinationOffice.city + ' - ' + shipment.destinationOffice.address}">
+                    </div>
+
+                </div>
 
             </div>
 
@@ -111,22 +182,44 @@
             <div class="col-md-6"
                  th:if="${shipment.deliveryType.name() == 'ADDRESS'}">
 
-                <strong>Delivery Address:</strong>
+                <div class="border rounded p-3">
 
-                <span th:text="${shipment.deliveryAddress}">
-        </span>
+                    <div class="text-muted small">Delivery Address</div>
+
+                    <div th:text="${shipment.deliveryAddress}">
+                    </div>
+
+                </div>
 
             </div>
 
         </div>
 
-        <div class="mt-3">
+
+        <div class="row mb-4">
+
+            <div class="col-md-6">
+
+                <div class="border rounded p-3">
+
+                    <div class="text-muted small">Created At</div>
+
+                    <div th:text="${#temporals.format(shipment.dateCreated,'yyyy-MM-dd HH:mm')}">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="text-end">
 
             <form th:if="${shipment.status.name() == 'SENT'}"
                   th:action="@{/shipments/deliver/{id}(id=${shipment.id})}"
                   method="post">
 
-                <button class="btn btn-success">
+                <button class="btn btn-success px-4">
                     Mark as Delivered
                 </button>
 

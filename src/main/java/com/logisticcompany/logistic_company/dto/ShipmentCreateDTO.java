@@ -17,7 +17,7 @@ public class ShipmentCreateDTO {
 
     @NotNull(message = "Source office is required")
     private Long sourceOfficeId;
-    @NotNull(message = "Office is required")
+
     private Long destinationOfficeId;
 
     @NotBlank(message = "Description cannot be empty")
