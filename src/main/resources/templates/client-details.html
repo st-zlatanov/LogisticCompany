@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head('Client Details')"></head>
+
+<body>
+
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="container mt-4">
+
+    <h2 class="page-title">Client Details</h2>
+
+    <div class="card p-4 mb-4">
+
+        <div class="row">
+
+            <div class="col-md-4">
+                <strong>ID:</strong>
+                <span th:text="${client.id}"></span>
+            </div>
+
+            <div class="col-md-4">
+                <strong>Name:</strong>
+                <span th:text="${client.name}"></span>
+            </div>
+
+            <div class="col-md-4">
+                <strong>Phone:</strong>
+                <span th:text="${client.phone}"></span>
+            </div>
+
+        </div>
+
+        <div class="row mt-3">
+
+            <div class="col-md-6">
+                <strong>Address:</strong>
+                <span th:text="${client.address}"></span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <h4 class="mb-3">Sent Shipments</h4>
+
+    <div class="card mb-4">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover mb-0">
+
+                <thead class="table-dark">
+
+                <tr>
+                    <th>ID</th>
+                    <th>Tracking</th>
+                    <th>Receiver</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                <tr th:each="s : ${sentShipments}">
+
+                    <td th:text="${s.id}"></td>
+
+                    <td th:text="${s.trackingNumber}"></td>
+
+                    <td th:text="${s.receiver.name}"></td>
+
+                    <td th:text="${s.price} + ' €'"></td>
+
+                    <td>
+<span th:if="${s.status.name() == 'SENT'}"
+      class="badge bg-warning text-dark">
+Sent
+</span>
+
+                        <span th:if="${s.status.name() == 'DELIVERED'}"
+                              class="badge bg-success">
+Delivered
+</span>
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <h4 class="mb-3">Received Shipments</h4>
+
+    <div class="card">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover mb-0">
+
+                <thead class="table-dark">
+
+                <tr>
+                    <th>ID</th>
+                    <th>Tracking</th>
+                    <th>Sender</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                <tr th:each="s : ${receivedShipments}">
+
+                    <td th:text="${s.id}"></td>
+
+                    <td th:text="${s.trackingNumber}"></td>
+
+                    <td th:text="${s.sender.name}"></td>
+
+                    <td th:text="${s.price} + ' €'"></td>
+
+                    <td>
+
+<span th:if="${s.status.name() == 'SENT'}"
+      class="badge bg-warning text-dark">
+Sent
+</span>
+
+                        <span th:if="${s.status.name() == 'DELIVERED'}"
+                              class="badge bg-success">
+Delivered
+</span>
+
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

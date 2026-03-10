@@ -22,4 +22,20 @@ public class ClientService {
     public List<Client> getAllClients() {
         return clientRepository.findAll();
     }
+    public Client getClientById(Long id) {
+        return clientRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Client not found"));
+    }
+
+    public void updateClient(Long id, Client updatedClient) {
+
+        Client client = clientRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Client not found"));
+
+        client.setName(updatedClient.getName());
+        client.setAddress(updatedClient.getAddress());
+        client.setPhone(updatedClient.getPhone());
+
+        clientRepository.save(client);
+    }
 }

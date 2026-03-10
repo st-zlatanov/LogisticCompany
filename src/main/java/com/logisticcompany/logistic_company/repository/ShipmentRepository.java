@@ -1,6 +1,7 @@
 package com.logisticcompany.logistic_company.repository;
 
 
+import com.logisticcompany.logistic_company.model.Client;
 import com.logisticcompany.logistic_company.model.Shipment;
 import com.logisticcompany.logistic_company.model.ShipmentStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,6 +14,9 @@ import java.util.Optional;
 public interface ShipmentRepository extends JpaRepository<Shipment, Long> {
 
     List<Shipment> findByStatus(ShipmentStatus status);
+    List<Shipment> findBySender(Client sender);
+
+    List<Shipment> findByReceiver(Client receiver);
 
     List<Shipment> findBySenderId(Long senderId);
 

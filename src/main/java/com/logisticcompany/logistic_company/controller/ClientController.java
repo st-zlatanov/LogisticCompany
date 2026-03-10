@@ -2,6 +2,7 @@ package com.logisticcompany.logistic_company.controller;
 
 import com.logisticcompany.logistic_company.model.Client;
 import com.logisticcompany.logistic_company.service.ClientService;
+import com.logisticcompany.logistic_company.service.ShipmentService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,9 +12,11 @@ import org.springframework.web.bind.annotation.*;
 public class ClientController {
 
     private final ClientService clientService;
+    private final ShipmentService shipmentService;
 
-    public ClientController(ClientService clientService) {
+    public ClientController(ClientService clientService, ShipmentService shipmentService) {
         this.clientService = clientService;
+        this.shipmentService = shipmentService;
     }
 
     @GetMapping
@@ -32,5 +35,38 @@ public class ClientController {
     public String createClient(@ModelAttribute Client client) {
         clientService.save(client);
         return "redirect:/clients";
+    }
+    @GetMapping("/edit/{id}")
+    public String editClient(@PathVariable Long id, Model model) {
+
+        Client client = clientService.getClientById(id);
+
+        model.addAttribute("client", client);
+
+        return "edit-client";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String updateClient(@PathVariable Long id,
+                               @ModelAttribute Client client) {
+
+        clientService.updateClient(id, client);
+
+        return "redirect:/clients";
+    }
+
+    @GetMapping("/{id}")
+    public String clientDetails(@PathVariable Long id, Model model){
+
+        Client client = clientService.getClientById(id);
+
+        model.addAttribute("client", client);
+        model.addAttribute("sentShipments",
+                shipmentService.getShipmentsSentByClient(client));
+
+        model.addAttribute("receivedShipments",
+                shipmentService.getShipmentsReceivedByClient(client));
+
+        return "client-details";
     }
 }

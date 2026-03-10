@@ -132,4 +132,12 @@ public class ShipmentService {
                 .orElseThrow(() -> new RuntimeException("Shipment not found"));
     }
 
+    public List<Shipment> getShipmentsSentByClient(Client client){
+        return shipmentRepository.findBySender(client);
+    }
+
+    public List<Shipment> getShipmentsReceivedByClient(Client client){
+        return shipmentRepository.findByReceiver(client);
+    }
+
 }

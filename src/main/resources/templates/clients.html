@@ -9,26 +9,32 @@
 
 <div class="container mt-4">
 
-    <div class="d-flex justify-content-between mb-3">
-        <h2 class="page-title">Clients</h2>
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3">
+
+        <h2 class="page-title mb-3 mb-md-0">Clients</h2>
 
         <a href="/clients/create" class="btn btn-success">
             Create Client
         </a>
+
     </div>
 
-    <div class="card">
+    <div class="card shadow-sm">
 
         <div class="table-responsive">
 
-            <table class="table table-hover">
+            <table class="table table-hover align-middle mb-0">
 
-                <thead>
+                <thead class="table-dark">
+
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
+                    <th>Address</th>
                     <th>Phone</th>
+                    <th>Actions</th>
                 </tr>
+
                 </thead>
 
                 <tbody>
@@ -37,9 +43,38 @@
 
                     <td th:text="${c.id}"></td>
 
-                    <td th:text="${c.user.fullName}"></td>
+                    <td th:text="${c.name}"></td>
+
+                    <td th:text="${c.address}"></td>
 
                     <td th:text="${c.phone}"></td>
+
+                    <td>
+
+                        <div class="d-flex gap-2 flex-wrap">
+
+                            <a th:href="@{/clients/{id}(id=${c.id})}"
+                               class="btn btn-sm btn-secondary">
+                                Details
+                            </a>
+
+                            <a th:href="@{/clients/edit/{id}(id=${c.id})}"
+                               class="btn btn-sm btn-primary">
+                                Edit
+                            </a>
+
+                            <form th:action="@{/clients/delete/{id}(id=${c.id})}"
+                                  method="post">
+
+                                <button class="btn btn-sm btn-danger">
+                                    Delete
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </td>
 
                 </tr>
 

@@ -1,28 +1,31 @@
 package com.logisticcompany.logistic_company.dto;
 
 import com.logisticcompany.logistic_company.model.DeliveryType;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 public class ShipmentCreateDTO {
 
-    @NotNull
+    @NotNull(message = "Sender is required")
     private Long senderId;
 
-    @NotNull
+    @NotNull(message = "Receiver is required")
     private Long receiverId;
 
     private Long employeeId;
 
-    @NotNull
+    @NotNull(message = "Source office is required")
     private Long sourceOfficeId;
-
+    @NotNull(message = "Office is required")
     private Long destinationOfficeId;
 
+    @NotBlank(message = "Description cannot be empty")
     private String description;
-
+    @NotNull(message = "Weight is required")
+    @Positive(message = "Weight must be greater than 0")
     private Double weight;
-
-    @NotNull
+    @NotNull(message = "Delivery type must be selected")
     private DeliveryType deliveryType;
 
     public ShipmentCreateDTO() {}
