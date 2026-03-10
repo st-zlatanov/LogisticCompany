@@ -28,6 +28,10 @@ public interface ShipmentRepository extends JpaRepository<Shipment, Long> {
 
     Optional<Shipment> findByTrackingNumber(String trackingNumber);
 
+    boolean existsBySender(Client sender);
+
+    boolean existsByReceiver(Client receiver);
+
     @Query("""
 SELECT s FROM Shipment s
 WHERE (:search IS NULL OR

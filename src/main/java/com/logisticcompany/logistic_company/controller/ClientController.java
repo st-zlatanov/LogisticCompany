@@ -69,4 +69,20 @@ public class ClientController {
 
         return "client-details";
     }
+
+    @PostMapping("/delete/{id}")
+    public String deleteClient(@PathVariable Long id){
+
+        clientService.deleteOrDeactivateClient(id);
+
+        return "redirect:/clients";
+    }
+
+    @PostMapping("/activate/{id}")
+    public String activateClient(@PathVariable Long id){
+
+        clientService.activateClient(id);
+
+        return "redirect:/clients";
+    }
 }

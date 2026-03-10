@@ -51,28 +51,36 @@
 
                     <td>
 
-                        <div class="d-flex gap-2 flex-wrap">
-
-                            <a th:href="@{/clients/{id}(id=${c.id})}"
-                               class="btn btn-sm btn-secondary">
-                                Details
-                            </a>
+                        <div class="d-flex gap-2">
 
                             <a th:href="@{/clients/edit/{id}(id=${c.id})}"
                                class="btn btn-sm btn-primary">
                                 Edit
                             </a>
 
-                            <form th:action="@{/clients/delete/{id}(id=${c.id})}"
+                            <form th:if="${c.user.enabled}"
+                                  th:action="@{/clients/delete/{id}(id=${c.id})}"
                                   method="post">
 
                                 <button class="btn btn-sm btn-danger">
-                                    Delete
+                                    Delete / Deactivate
+                                </button>
+
+                            </form>
+
+                            <form th:if="${!c.user.enabled}"
+                                  th:action="@{/clients/activate/{id}(id=${c.id})}"
+                                  method="post">
+
+                                <button class="btn btn-sm btn-success">
+                                    Activate
                                 </button>
 
                             </form>
 
                         </div>
+
+                    </td>
 
                     </td>
 
