@@ -30,6 +30,7 @@
                     <th>ID</th>
                     <th>City</th>
                     <th>Address</th>
+                    <th>Actions</th>
                 </tr>
                 </thead>
 
@@ -42,6 +43,29 @@
                     <td th:text="${o.city}"></td>
 
                     <td th:text="${o.address}"></td>
+
+                    <td>
+
+                        <div class="d-flex gap-2">
+
+                            <a th:href="@{/offices/edit/{id}(id=${o.id})}"
+                               class="btn btn-sm btn-primary">
+                                Edit
+                            </a>
+
+                            <form th:action="@{/offices/delete/{id}(id=${o.id})}"
+                                  method="post">
+
+                                <button class="btn btn-sm btn-danger"
+                                        onclick="return confirm('Delete this office?')">
+                                    Delete
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </td>
 
                 </tr>
 

@@ -140,4 +140,12 @@ public class ShipmentService {
         return shipmentRepository.findByReceiver(client);
     }
 
+    public List<Shipment> getShipmentsFromOffice(Office office){
+        return shipmentRepository.findBySourceOffice(office);
+    }
+
+    public List<Shipment> getShipmentsToOffice(Office office){
+        return shipmentRepository.findByDestinationOffice(office);
+    }
+
 }

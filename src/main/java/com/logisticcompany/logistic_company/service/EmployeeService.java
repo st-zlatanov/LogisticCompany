@@ -96,4 +96,7 @@ public class EmployeeService {
         employeeRepository.deleteById(id);
 
     }
+    public List<Employee> getEmployeesByOffice(Office office){
+        return employeeRepository.findByOffice(office);
+    }
 }

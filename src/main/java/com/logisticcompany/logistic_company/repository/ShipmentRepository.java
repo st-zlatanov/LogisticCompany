@@ -2,6 +2,7 @@ package com.logisticcompany.logistic_company.repository;
 
 
 import com.logisticcompany.logistic_company.model.Client;
+import com.logisticcompany.logistic_company.model.Office;
 import com.logisticcompany.logistic_company.model.Shipment;
 import com.logisticcompany.logistic_company.model.ShipmentStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -31,6 +32,14 @@ public interface ShipmentRepository extends JpaRepository<Shipment, Long> {
     boolean existsBySender(Client sender);
 
     boolean existsByReceiver(Client receiver);
+
+    boolean existsBySourceOffice(Office office);
+
+    boolean existsByDestinationOffice(Office office);
+    List<Shipment> findBySourceOffice(Office office);
+
+    List<Shipment> findByDestinationOffice(Office office);
+
 
     @Query("""
 SELECT s FROM Shipment s
