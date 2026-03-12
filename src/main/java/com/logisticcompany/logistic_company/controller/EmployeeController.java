@@ -5,7 +5,9 @@ import com.logisticcompany.logistic_company.model.Employee;
 import com.logisticcompany.logistic_company.model.Position;
 import com.logisticcompany.logistic_company.service.EmployeeService;
 import com.logisticcompany.logistic_company.service.OfficeService;
+import com.logisticcompany.logistic_company.service.ShipmentService;
 import com.logisticcompany.logistic_company.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,19 +19,33 @@ public class EmployeeController {
     private final EmployeeService employeeService;
     private final OfficeService officeService;
     private final UserService userService;
+    private final ShipmentService shipmentService;
 
     public EmployeeController(EmployeeService employeeService,
                               OfficeService officeService,
-                              UserService userService) {
+                              UserService userService, ShipmentService shipmentService) {
         this.employeeService = employeeService;
         this.officeService = officeService;
         this.userService = userService;
+        this.shipmentService = shipmentService;
     }
 
     @GetMapping
     public String listEmployees(Model model) {
         model.addAttribute("employees", employeeService.getAllEmployees());
         return "employees";
+    }
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','EMPLOYEE')")
+    public String employeeDetails(@PathVariable Long id, Model model){
+
+        Employee employee = employeeService.getEmployeeById(id);
+
+        model.addAttribute("employee", employee);
+        model.addAttribute("shipments",
+                shipmentService.getShipmentsByEmployee(id));
+
+        return "employee-details";
     }
 
     @GetMapping("/create")

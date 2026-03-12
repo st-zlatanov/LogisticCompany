@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="fragments/head :: head('Offices')"></head>
 
@@ -13,7 +13,9 @@
 
         <h2 class="page-title mb-3 mb-md-0">Offices</h2>
 
-        <a href="/offices/create" class="btn btn-success">
+        <a sec:authorize="hasRole('ADMIN')"
+           href="/offices/create"
+           class="btn btn-success">
             Create Office
         </a>
 
@@ -52,20 +54,30 @@
 
                         <div class="d-flex gap-2 flex-wrap">
 
-                            <a th:href="@{/offices/edit/{id}(id=${o.id})}"
-                               class="btn btn-sm btn-primary">
-                                Edit
+                            <a sec:authorize="hasAnyRole('ADMIN','EMPLOYEE')"
+                               th:href="@{/offices/{id}(id=${o.id})}"
+                               class="btn btn-sm btn-secondary">
+                                Details
                             </a>
 
-                            <form th:action="@{/offices/delete/{id}(id=${o.id})}"
-                                  method="post">
+                            <div sec:authorize="hasRole('ADMIN')" class="d-flex gap-2">
 
-                                <button class="btn btn-sm btn-danger"
-                                        onclick="return confirm('Delete this office?')">
-                                    Delete
-                                </button>
+                                <a th:href="@{/offices/edit/{id}(id=${o.id})}"
+                                   class="btn btn-sm btn-primary">
+                                    Edit
+                                </a>
 
-                            </form>
+                                <form th:action="@{/offices/delete/{id}(id=${o.id})}"
+                                      method="post">
+
+                                    <button class="btn btn-sm btn-danger"
+                                            onclick="return confirm('Delete this office?')">
+                                        Delete
+                                    </button>
+
+                                </form>
+
+                            </div>
 
                         </div>
 

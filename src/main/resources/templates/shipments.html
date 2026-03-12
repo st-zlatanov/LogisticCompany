@@ -113,13 +113,15 @@ Delivered
                                 Details
                             </a>
 
-                            <a th:if="${s.status.name() != 'DELIVERED'}"
+                            <a sec:authorize="hasAnyRole('ADMIN','EMPLOYEE')"
+                               th:if="${s.status.name() != 'DELIVERED'}"
                                th:href="@{/shipments/edit/{id}(id=${s.id})}"
                                class="btn btn-sm btn-primary">
                                 Edit
                             </a>
 
-                            <form th:if="${s.status.name() != 'DELIVERED'}"
+                            <form sec:authorize="hasAnyRole('ADMIN','EMPLOYEE')"
+                                  th:if="${s.status.name() != 'DELIVERED'}"
                                   th:action="@{/shipments/delete/{id}(id=${s.id})}"
                                   method="post">
 

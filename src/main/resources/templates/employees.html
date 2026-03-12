@@ -55,6 +55,10 @@
                     <td>
 
                         <div class="d-flex gap-2 flex-wrap">
+                            <a th:href="@{/employees/{id}(id=${e.id})}"
+                               class="btn btn-sm btn-secondary">
+                                Details
+                            </a>
 
                             <a th:href="@{/employees/edit/{id}(id=${e.id})}"
                                class="btn btn-sm btn-primary">

@@ -5,17 +5,21 @@ import com.logisticcompany.logistic_company.dto.ShipmentEditDTO;
 import com.logisticcompany.logistic_company.model.*;
 import com.logisticcompany.logistic_company.repository.EmployeeRepository;
 import com.logisticcompany.logistic_company.repository.UserRepository;
+import com.logisticcompany.logistic_company.security.UserDetailsImpl;
 import com.logisticcompany.logistic_company.service.ClientService;
 import com.logisticcompany.logistic_company.service.EmployeeService;
 import com.logisticcompany.logistic_company.service.OfficeService;
 import com.logisticcompany.logistic_company.service.ShipmentService;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Controller
@@ -52,11 +56,17 @@ public class ShipmentController {
     }
 
     @GetMapping("/{id}")
-    public String shipmentDetails(@PathVariable Long id, Model model) {
+    public String shipmentDetails(@PathVariable Long id, Model model, Authentication authentication) {
 
         Shipment shipment = shipmentService.getShipmentById(id);
 
+        Employee employee = employeeRepository
+                .findByUserUsername(authentication.getName())
+                .orElse(null);
+
         model.addAttribute("shipment", shipment);
+        model.addAttribute("currentEmployee", employee);
+
 
         return "shipment-details";
     }
@@ -94,11 +104,15 @@ public class ShipmentController {
         return "redirect:/shipments";
     }
 
-    @PostMapping("/deliver/{id}")
-    public String deliver(@PathVariable Long id) {
-        shipmentService.deliverShipment(id);
-        return "redirect:/shipments";
-    }
+@PostMapping("/deliver/{id}")
+@PreAuthorize("hasRole('EMPLOYEE')")
+public String deliverShipment(@PathVariable Long id,
+                              @AuthenticationPrincipal UserDetailsImpl userDetails){
+
+    shipmentService.markAsDelivered(id, userDetails.getUser());
+
+    return "redirect:/shipments/" + id;
+}
 
     @GetMapping("/client/{id}")
     public String shipmentsByClient(@PathVariable Long id, Model model) {
@@ -125,18 +139,20 @@ public class ShipmentController {
     }
 
     @GetMapping("/revenue")
-    public String revenue(@RequestParam String start,
-                          @RequestParam String end,
-                          Model model) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public String revenue(@RequestParam(required = false) LocalDate start,
+                          @RequestParam(required = false) LocalDate end,
+                          Model model){
 
-        LocalDateTime startDate =
-                LocalDateTime.parse(start);
+        if(start != null && end != null){
 
-        LocalDateTime endDate =
-                LocalDateTime.parse(end);
+            Double revenue = shipmentService.getRevenue(
+                    start.atStartOfDay(),
+                    end.atTime(23,59)
+            );
 
-        model.addAttribute("revenue",
-                shipmentService.getRevenue(startDate, endDate));
+            model.addAttribute("revenue", revenue);
+        }
 
         return "revenue";
     }
@@ -199,11 +215,10 @@ public class ShipmentController {
         return "redirect:/shipments";
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','EMPLOYEE')")
     @PostMapping("/delete/{id}")
-    public String deleteShipment(@PathVariable Long id){
-
+    public String deleteShipment(@PathVariable Long id) {
         shipmentService.deleteShipment(id);
-
         return "redirect:/shipments";
     }
 

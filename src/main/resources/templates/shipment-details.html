@@ -229,11 +229,21 @@ Delivered
 
         <div class="text-end">
 
-            <form th:if="${shipment.status.name() == 'SENT'}"
+            <form th:if="${shipment.status.name() == 'SENT'
+       and currentEmployee != null
+       and (
+            (shipment.deliveryType.name() == 'ADDRESS'
+                and currentEmployee.position.name() == 'COURIER')
+            or
+            (shipment.deliveryType.name() == 'OFFICE'
+                and currentEmployee.position.name() == 'OFFICE'
+                and shipment.destinationOffice != null
+                and currentEmployee.office.id == shipment.destinationOffice.id)
+           )}"
                   th:action="@{/shipments/deliver/{id}(id=${shipment.id})}"
                   method="post">
 
-                <button class="btn btn-success px-4">
+                <button class="btn btn-success">
                     Mark as Delivered
                 </button>
 

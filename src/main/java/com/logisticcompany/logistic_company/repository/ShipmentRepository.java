@@ -22,7 +22,7 @@ public interface ShipmentRepository extends JpaRepository<Shipment, Long> {
 
     List<Shipment> findByRegisteredById(Long employeeId);
 
-    List<Shipment> findBySender_User_Username(String username);
+    List<Shipment> findBySender_User_UsernameOrReceiver_User_Username(String senderUsername, String receiverUsername);
 
     Optional<Shipment> findByTrackingNumber(String trackingNumber);
 
@@ -39,19 +39,21 @@ public interface ShipmentRepository extends JpaRepository<Shipment, Long> {
 
 
     @Query("""
-SELECT s FROM Shipment s
-WHERE (:search IS NULL OR
+    SELECT s FROM Shipment s
+    WHERE (:search IS NULL OR
        LOWER(s.sender.user.fullName) LIKE LOWER(CONCAT('%', :search, '%'))
        OR
        LOWER(s.receiver.user.fullName) LIKE LOWER(CONCAT('%', :search, '%')))
-AND (:status IS NULL OR s.status = :status)
-""")
+    AND (:status IS NULL OR s.status = :status)
+    """)
     List<Shipment> filterShipments(String search, ShipmentStatus status);
 
-    @Query("SELECT SUM(s.price) FROM Shipment s " +
-            "WHERE s.dateCreated BETWEEN :start AND :end")
-    Double calculateRevenue(LocalDateTime start,
-                            LocalDateTime end);
+    @Query("""
+    SELECT SUM(s.price)
+    FROM Shipment s
+    WHERE s.dateCreated BETWEEN :start AND :end
+    """)
+    Double getRevenueBetween(LocalDateTime start, LocalDateTime end);
 
     boolean existsByRegisteredBy(Employee employee);
 }

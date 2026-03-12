@@ -4,10 +4,11 @@ import com.logisticcompany.logistic_company.model.Office;
 import com.logisticcompany.logistic_company.service.EmployeeService;
 import com.logisticcompany.logistic_company.service.OfficeService;
 import com.logisticcompany.logistic_company.service.ShipmentService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
+@PreAuthorize("hasRole('ADMIN')")
 @Controller
 @RequestMapping("/offices")
 public class OfficeController {
@@ -21,7 +22,7 @@ public class OfficeController {
         this.employeeService = employeeService;
         this.shipmentService = shipmentService;
     }
-
+    @PreAuthorize("hasAnyRole('ADMIN','EMPLOYEE')")
     @GetMapping
     public String list(Model model) {
         model.addAttribute("offices", officeService.getAllOffices());
@@ -66,7 +67,7 @@ public class OfficeController {
 
         return "redirect:/offices";
     }
-
+    @PreAuthorize("hasAnyRole('ADMIN','EMPLOYEE')")
     @GetMapping("/{id}")
     public String officeDetails(@PathVariable Long id, Model model){
 

@@ -101,27 +101,55 @@ public class ShipmentService {
         return shipmentRepository.findByStatus(ShipmentStatus.DELIVERED);
     }
 
-    public void deliverShipment(Long id) {
+    public void markAsDelivered(Long shipmentId, User user){
 
-        Shipment shipment = shipmentRepository.findById(id).orElseThrow();
+        Shipment shipment = shipmentRepository.findById(shipmentId)
+                .orElseThrow(() -> new RuntimeException("Shipment not found"));
+
+        Employee employee = employeeRepository.findByUser(user)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+
+        if(shipment.getStatus() == ShipmentStatus.DELIVERED){
+            throw new RuntimeException("Shipment already delivered");
+        }
+
+        if(shipment.getDeliveryType() == DeliveryType.ADDRESS){
+
+            if(employee.getPosition() != Position.COURIER){
+                throw new RuntimeException(
+                        "Only couriers can deliver address shipments"
+                );
+            }
+
+        }else if(shipment.getDeliveryType() == DeliveryType.OFFICE){
+
+            if(employee.getPosition() != Position.OFFICE ||
+                    !shipment.getDestinationOffice().getId()
+                            .equals(employee.getOffice().getId())){
+
+                throw new RuntimeException(
+                        "Only employees from the destination office can deliver this shipment"
+                );
+            }
+
+        }
+
 
         shipment.setStatus(ShipmentStatus.DELIVERED);
-        shipment.setDateDelivered(LocalDateTime.now());
 
         shipmentRepository.save(shipment);
     }
 
     public List<Shipment> getShipmentsForLoggedUser(String username) {
-        return shipmentRepository.findBySender_User_Username(username);
+        return shipmentRepository
+                .findBySender_User_UsernameOrReceiver_User_Username(username, username);
     }
 
-    public Double getRevenue(LocalDateTime start,
-                             LocalDateTime end) {
+    public Double getRevenue(LocalDateTime start, LocalDateTime end){
 
-        Double result = shipmentRepository
-                .calculateRevenue(start, end);
+        Double revenue = shipmentRepository.getRevenueBetween(start, end);
 
-        return result == null ? 0 : result;
+        return revenue != null ? revenue : 0;
     }
 
     public Shipment getShipmentById(Long id) {

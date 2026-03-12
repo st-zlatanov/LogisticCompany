@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head('Revenue')"></head>
+
+<body>
+
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="container mt-4">
+
+    <h2 class="page-title mb-4">Company Revenue</h2>
+
+    <div class="card p-4 mb-4">
+
+        <form method="get" action="/shipments/revenue" class="row g-3">
+
+            <div class="col-md-4">
+                <label>Start Date</label>
+                <input type="date" name="start" class="form-control">
+            </div>
+
+            <div class="col-md-4">
+                <label>End Date</label>
+                <input type="date" name="end" class="form-control">
+            </div>
+
+            <div class="col-md-4 align-self-end">
+                <button class="btn btn-primary w-100">
+                    Calculate
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+    <div th:if="${revenue != null}" class="card p-4 text-center">
+
+        <h4>Total Revenue</h4>
+
+        <h2 class="text-success">
+
+            <span th:text="${revenue}"></span> €
+
+        </h2>
+
+    </div>
+
+</div>
+
+</body>
+</html>
