@@ -6,6 +6,8 @@ import com.logisticcompany.logistic_company.model.Role;
 import com.logisticcompany.logistic_company.model.User;
 import com.logisticcompany.logistic_company.repository.ClientRepository;
 import com.logisticcompany.logistic_company.repository.UserRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -76,6 +78,17 @@ public class UserService {
     public void removeAdmin(Long id){
 
         User user = userRepository.findById(id).orElseThrow();
+
+        if(user.getUsername().equals("admin")){
+            throw new RuntimeException("Main admin cannot be deleted");
+        }
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String loggedUsername = auth.getName();
+
+        if(user.getUsername().equals(loggedUsername)) {
+            throw new RuntimeException("You cannot remove your own ADMIN role");
+        }
 
         user.setRole(Role.EMPLOYEE);
 

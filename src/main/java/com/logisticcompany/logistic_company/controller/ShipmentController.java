@@ -1,6 +1,7 @@
 package com.logisticcompany.logistic_company.controller;
 
 import com.logisticcompany.logistic_company.dto.ShipmentCreateDTO;
+import com.logisticcompany.logistic_company.dto.ShipmentEditDTO;
 import com.logisticcompany.logistic_company.model.*;
 import com.logisticcompany.logistic_company.repository.EmployeeRepository;
 import com.logisticcompany.logistic_company.repository.UserRepository;
@@ -161,4 +162,49 @@ public class ShipmentController {
 
         return "track-shipment";
     }
+
+    @GetMapping("/edit/{id}")
+    public String editShipment(@PathVariable Long id, Model model){
+
+        Shipment shipment = shipmentService.getShipmentById(id);
+
+        ShipmentEditDTO dto = new ShipmentEditDTO();
+
+        dto.setSenderId(shipment.getSender().getId());
+        dto.setReceiverId(shipment.getReceiver().getId());
+        dto.setSourceOfficeId(shipment.getSourceOffice().getId());
+
+        if(shipment.getDestinationOffice() != null){
+            dto.setDestinationOfficeId(shipment.getDestinationOffice().getId());
+        }
+
+        dto.setDeliveryAddress(shipment.getDeliveryAddress());
+        dto.setDescription(shipment.getDescription());
+        dto.setWeight(shipment.getWeight());
+        dto.setDeliveryType(shipment.getDeliveryType());
+
+        model.addAttribute("shipment", dto);
+        model.addAttribute("clients", clientService.getAllClients());
+        model.addAttribute("offices", officeService.getAllOffices());
+
+        return "edit-shipment";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String updateShipment(@PathVariable Long id,
+                                 @ModelAttribute ShipmentEditDTO dto){
+
+        shipmentService.updateShipment(id, dto);
+
+        return "redirect:/shipments";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String deleteShipment(@PathVariable Long id){
+
+        shipmentService.deleteShipment(id);
+
+        return "redirect:/shipments";
+    }
+
 }

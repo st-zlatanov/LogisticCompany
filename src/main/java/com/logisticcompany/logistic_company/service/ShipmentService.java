@@ -1,6 +1,7 @@
 package com.logisticcompany.logistic_company.service;
 
 import com.logisticcompany.logistic_company.dto.ShipmentCreateDTO;
+import com.logisticcompany.logistic_company.dto.ShipmentEditDTO;
 import com.logisticcompany.logistic_company.model.*;
 import com.logisticcompany.logistic_company.repository.ClientRepository;
 import com.logisticcompany.logistic_company.repository.EmployeeRepository;
@@ -146,6 +147,53 @@ public class ShipmentService {
 
     public List<Shipment> getShipmentsToOffice(Office office){
         return shipmentRepository.findByDestinationOffice(office);
+    }
+
+    public void updateShipment(Long id, ShipmentEditDTO dto){
+
+        Shipment shipment = shipmentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Shipment not found"));
+
+        if(shipment.getStatus() == ShipmentStatus.DELIVERED){
+            throw new RuntimeException("Delivered shipments cannot be edited");
+        }
+
+        shipment.setSender(clientRepository.findById(dto.getSenderId()).orElseThrow());
+        shipment.setReceiver(clientRepository.findById(dto.getReceiverId()).orElseThrow());
+        shipment.setSourceOffice(officeRepository.findById(dto.getSourceOfficeId()).orElseThrow());
+
+        if(dto.getDeliveryType() == DeliveryType.OFFICE){
+
+            shipment.setDestinationOffice(
+                    officeRepository.findById(dto.getDestinationOfficeId()).orElseThrow()
+            );
+
+            shipment.setDeliveryAddress(null);
+        }
+
+        if(dto.getDeliveryType() == DeliveryType.ADDRESS){
+
+            shipment.setDestinationOffice(null);
+            shipment.setDeliveryAddress(dto.getDeliveryAddress());
+        }
+
+        shipment.setDescription(dto.getDescription());
+        shipment.setWeight(dto.getWeight());
+        shipment.setDeliveryType(dto.getDeliveryType());
+
+        shipmentRepository.save(shipment);
+    }
+
+    public void deleteShipment(Long id){
+
+        Shipment shipment = shipmentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Shipment not found"));
+
+        if(shipment.getStatus() == ShipmentStatus.DELIVERED){
+            throw new RuntimeException("Delivered shipments cannot be deleted");
+        }
+
+        shipmentRepository.delete(shipment);
     }
 
 }

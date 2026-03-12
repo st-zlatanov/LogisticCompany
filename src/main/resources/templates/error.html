@@ -1,14 +1,31 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Error</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head('Error')"></head>
+
 <body>
 
-<h2>Възникна грешка</h2>
-<p>Моля върнете се назад.</p>
+<div th:replace="fragments/navbar :: navbar"></div>
 
-<a href="/">Към начална страница</a>
+<div class="container mt-5 text-center">
 
+    <h2 class="text-danger mb-4">
+        Something went wrong
+    </h2>
+
+    <div class="alert alert-danger">
+
+<span th:text="${message != null ? message : 'Unexpected error occurred'}">
+Error message
+</span>
+
+    </div>
+
+    <a href="/" class="btn btn-primary mt-3">
+        Go back
+    </a>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
