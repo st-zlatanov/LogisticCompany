@@ -18,7 +18,7 @@ public class SecurityConfig {
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers("/register", "/login").anonymous()
                         .requestMatchers("/shipments/track/**").permitAll()
-                        .requestMatchers("/shipments/create").hasAnyRole("ADMIN", "EMPLOYEE")
+                        .requestMatchers("/shipments/create").hasRole("EMPLOYEE")
                         .requestMatchers("/shipments/deliver/**").hasAnyRole("ADMIN","EMPLOYEE")
                         .requestMatchers("/shipments/my").hasRole("CLIENT")
                         .requestMatchers("/shipments/**").authenticated()

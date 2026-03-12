@@ -14,7 +14,7 @@ public class Client {
     private String address;
     private String phone;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 

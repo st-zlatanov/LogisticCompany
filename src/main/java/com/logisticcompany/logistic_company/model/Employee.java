@@ -17,7 +17,7 @@ public class Employee {
     @ManyToOne
     private Office office;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private User user;
 
 

@@ -7,6 +7,7 @@ import com.logisticcompany.logistic_company.model.Position;
 import com.logisticcompany.logistic_company.model.User;
 import com.logisticcompany.logistic_company.repository.EmployeeRepository;
 import com.logisticcompany.logistic_company.repository.OfficeRepository;
+import com.logisticcompany.logistic_company.repository.ShipmentRepository;
 import com.logisticcompany.logistic_company.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,13 +19,15 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final OfficeRepository officeRepository;
     private final UserRepository userRepository;
+    private final ShipmentRepository shipmentRepository;
 
     public EmployeeService(EmployeeRepository employeeRepository,
                            OfficeRepository officeRepository,
-                           UserRepository userRepository) {
+                           UserRepository userRepository, ShipmentRepository shipmentRepository) {
         this.employeeRepository = employeeRepository;
         this.officeRepository = officeRepository;
         this.userRepository = userRepository;
+        this.shipmentRepository = shipmentRepository;
     }
 
     public Employee getEmployeeById(Long id) {
@@ -91,12 +94,39 @@ public class EmployeeService {
         employeeRepository.save(employee);
 
     }
-    public void deleteEmployee(Long id){
 
-        employeeRepository.deleteById(id);
 
+        public void deleteOrDeactivateEmployee(Long id){
+
+            Employee employee = employeeRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Employee not found"));
+
+            if(shipmentRepository.existsByRegisteredBy(employee)){
+
+                employee.getUser().setEnabled(false);
+                userRepository.save(employee.getUser());
+
+            }else{
+
+                employeeRepository.delete(employee);
+
+            }
+        }
+
+
+    public void activateEmployee(Long id){
+
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+
+        employee.getUser().setEnabled(true);
+
+        employeeRepository.save(employee);
     }
+
+
     public List<Employee> getEmployeesByOffice(Office office){
         return employeeRepository.findByOffice(office);
     }
+
 }

@@ -61,11 +61,23 @@
                                 Edit
                             </a>
 
-                            <form th:action="@{/employees/delete/{id}(id=${e.id})}"
+                            <form th:if="${!e.user.enabled}"
+                                  th:action="@{/employees/activate/{id}(id=${e.id})}"
                                   method="post">
 
-                                <button class="btn btn-sm btn-danger">
-                                    Delete
+                                <button class="btn btn-sm btn-success">
+                                    Activate
+                                </button>
+
+                            </form>
+
+                            <form th:if="${e.user.enabled}"
+                                  th:action="@{/employees/delete/{id}(id=${e.id})}"
+                                  method="post">
+
+                                <button class="btn btn-sm btn-danger"
+                                        onclick="return confirm('Delete this employee?')">
+                                    Delete/Deactivate
                                 </button>
 
                             </form>

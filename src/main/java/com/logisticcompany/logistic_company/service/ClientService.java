@@ -1,11 +1,14 @@
 package com.logisticcompany.logistic_company.service;
 
 import com.logisticcompany.logistic_company.model.Client;
+import com.logisticcompany.logistic_company.model.User;
 import com.logisticcompany.logistic_company.repository.ClientRepository;
 import com.logisticcompany.logistic_company.repository.ShipmentRepository;
+import com.logisticcompany.logistic_company.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClientService {
@@ -13,7 +16,7 @@ public class ClientService {
     private final ClientRepository clientRepository;
     private final ShipmentRepository shipmentRepository;
 
-    public ClientService(ClientRepository clientRepository, ShipmentRepository shipmentRepository) {
+    public ClientService(ClientRepository clientRepository, ShipmentRepository shipmentRepository, UserRepository userRepository) {
         this.clientRepository = clientRepository;
         this.shipmentRepository = shipmentRepository;
     }
@@ -54,6 +57,7 @@ public class ClientService {
 
         Client client = clientRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Client not found"));
+
 
         if(canDeleteClient(client)){
             clientRepository.delete(client);

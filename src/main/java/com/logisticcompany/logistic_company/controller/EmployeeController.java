@@ -70,10 +70,17 @@ public class EmployeeController {
         return "redirect:/employees";
     }
 
+    @PostMapping("/activate/{id}")
+    public String activateEmployee(@PathVariable Long id){
+
+        employeeService.activateEmployee(id);
+        return "redirect:/employees";
+    }
+
     @PostMapping("/delete/{id}")
     public String deleteEmployee(@PathVariable Long id){
 
-        employeeService.deleteEmployee(id);
+        employeeService.deleteOrDeactivateEmployee(id);
 
         return "redirect:/employees";
     }

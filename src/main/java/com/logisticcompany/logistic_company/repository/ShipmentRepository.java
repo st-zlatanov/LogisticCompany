@@ -1,10 +1,7 @@
 package com.logisticcompany.logistic_company.repository;
 
 
-import com.logisticcompany.logistic_company.model.Client;
-import com.logisticcompany.logistic_company.model.Office;
-import com.logisticcompany.logistic_company.model.Shipment;
-import com.logisticcompany.logistic_company.model.ShipmentStatus;
+import com.logisticcompany.logistic_company.model.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -55,4 +52,6 @@ AND (:status IS NULL OR s.status = :status)
             "WHERE s.dateCreated BETWEEN :start AND :end")
     Double calculateRevenue(LocalDateTime start,
                             LocalDateTime end);
+
+    boolean existsByRegisteredBy(Employee employee);
 }
