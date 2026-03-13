@@ -43,14 +43,17 @@ public class ShipmentController {
         this.employeeRepository = employeeRepository;
     }
 
+
     @GetMapping
-    public String listShipments(
-            @RequestParam(required = false) String search,
-            @RequestParam(required = false) ShipmentStatus status,
-            Model model) {
+    public String shipments(@RequestParam(required = false) String search,
+                            @RequestParam(required = false) ShipmentStatus status,
+                            @AuthenticationPrincipal UserDetailsImpl userDetails,
+                            Model model){
+
+        User user = userDetails.getUser();
 
         model.addAttribute("shipments",
-                shipmentService.getFilteredShipments(search, status));
+                shipmentService.getFilteredShipments(search, status, user));
 
         return "shipments";
     }

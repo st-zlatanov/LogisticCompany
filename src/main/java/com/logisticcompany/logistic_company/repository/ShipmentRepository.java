@@ -39,14 +39,21 @@ public interface ShipmentRepository extends JpaRepository<Shipment, Long> {
 
 
     @Query("""
-    SELECT s FROM Shipment s
-    WHERE (:search IS NULL OR
-       LOWER(s.sender.user.fullName) LIKE LOWER(CONCAT('%', :search, '%'))
-       OR
-       LOWER(s.receiver.user.fullName) LIKE LOWER(CONCAT('%', :search, '%')))
-    AND (:status IS NULL OR s.status = :status)
-    """)
-    List<Shipment> filterShipments(String search, ShipmentStatus status);
+SELECT s FROM Shipment s
+WHERE
+(:username IS NULL OR
+ s.sender.user.username = :username
+ OR s.receiver.user.username = :username)
+
+AND (:search IS NULL OR
+ LOWER(s.sender.user.fullName) LIKE LOWER(CONCAT('%', :search, '%'))
+ OR LOWER(s.receiver.user.fullName) LIKE LOWER(CONCAT('%', :search, '%')))
+
+AND (:status IS NULL OR s.status = :status)
+""")
+    List<Shipment> filterShipments(String search,
+                                   ShipmentStatus status,
+                                   String username);
 
     @Query("""
     SELECT SUM(s.price)

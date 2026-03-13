@@ -76,14 +76,23 @@ public class ShipmentService {
     public List<Shipment> getAllShipments() {
         return shipmentRepository.findAll();
     }
-    public List<Shipment> getFilteredShipments(String search, ShipmentStatus status){
 
-        if(search != null && search.isBlank()){
-            search = null;
-        }
+    public List<Shipment> getFilteredShipments(String search,
+                                           ShipmentStatus status,
+                                           User user){
 
-        return shipmentRepository.filterShipments(search, status);
+    if(search != null && search.isBlank()){
+        search = null;
     }
+
+    String username = null;
+
+    if(user.getRole() == Role.CLIENT){
+        username = user.getUsername();
+    }
+
+    return shipmentRepository.filterShipments(search, status, username);
+}
 
     public List<Shipment> getUndeliveredShipments() {
         return shipmentRepository.findByStatus(ShipmentStatus.SENT);
